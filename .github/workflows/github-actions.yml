@@ -5,7 +5,7 @@ jobs:
     name: unit test for backend
     runs-on: ubuntu-latest
     env:
-      COMPOSE_FILE: .github/docker-compose.yml
+      COMPOSE_FILE: .github/docker-compose-ci.yml
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
     strategy:
