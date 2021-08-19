@@ -8,6 +8,8 @@ jobs:
       COMPOSE_FILE: .github/docker-compose-ci.yml
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: ${{ secrets.DEBUG }}
     strategy:
       max-parallel: 4
       matrix:
