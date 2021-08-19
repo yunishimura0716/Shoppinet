@@ -20,4 +20,4 @@ jobs:
       - name: Build docker images
         run: docker-compose -f $COMPOSE_FILE build
       - name: Run tests
-        run: docker-compose -f $COMPOSE_FILE run test
+        run: make test-backend
