@@ -4,10 +4,10 @@ services:
   backend:
     container_name: backend_container
     build:
-      context: ../backend/.
+      context: ../packages/backend/.
       dockerfile: Dockerfile
     volumes:
-      - ../backend:/backend/
+      - ../packages/backend:/backend/
       - static_volume:/code/staticfiles
     stdin_open: true
     tty: true
