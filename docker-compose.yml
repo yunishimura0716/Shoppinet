@@ -3,20 +3,18 @@ version: "3"
 services: 
   backend:
     container_name: backend_container
-    env_file: ./backend/.env
+    env_file: ./packages//backend/.env
     build:
-      context: ./backend/.
+      context: ./packages/backend/.
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/backend/
-      - static_volume:/code/staticfiles
+      - ./packages/backend:/backend/
+      - static_volume:/backend/staticfiles
     stdin_open: true
     tty: true
     command: sh -c "python manage.py wait_for_db &&
                     python manage.py migrate &&
-                    python manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
+                    gunicorn --bind :8000 config.wsgi:application"
     networks:
       - backend_network
     environment:
@@ -24,8 +22,22 @@ services:
       - DB_NAME=app
       - DB_USER=postgres
       - DB_PASS=supersecretpassword
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - db
+  server:
+    container_name: backend_proxy
+    build:
+      context: ./packages/backend-proxy/.
+      dockerfile: Dockerfile.dev
+    volumes:
+      - static_volume:/backend/staticfiles/
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - backend_network
   db:
     image: postgres:latest
     environment:
